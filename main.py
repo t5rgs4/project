@@ -1,9 +1,12 @@
 #Создай собственный Шутер!
 from pygame import *
 import random
+import threading
 
 score = 0
 missing = 0
+
+sec = 0
 
 font.init()
 font2 = font.Font(None, 36)
@@ -27,7 +30,7 @@ class Player(GameSprite):
         if keys_pressed[K_d] and self.rect.x <= 650:
             self.rect.x += self.speed
     def fire(self):
-        bullet = Bullet('пуля1.png', self.rect.centerx, self.rect.centery, 5)
+        bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5)
         bullets.add(bullet)        
 class Enemy(GameSprite):
     direction = 'down'
@@ -48,6 +51,16 @@ class Bullet(GameSprite):
         if self.rect.y <= 0:
             self.kill()
 
+class NPS(GameSprite):
+    # def update(self):
+    #     keys_pressed = key.get_pressed()
+    #     if keys_pressed[K_a] and self.rect.x >= 0:
+    #         self.rect.x -= self.speed
+    #     if keys_pressed[K_d] and self.rect.x <= 650:
+            # self.rect.x += self.speed
+    def fire(self):
+        bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullets.add(bullet)
 #создай окно игры
 window = display.set_mode((700, 500))
 display.set_caption('Шутер')
@@ -59,27 +72,25 @@ FPS = 60
 
 monsters = sprite.Group()
 for i in range(10):
-    monster = Enemy('танк1.jpg',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5))
+    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5))
     monsters.add(monster)
 
 bullets = sprite.Group()
 
 
-sprite1 = Player('пушка1.jpg', 50, 400, 5)
-# sprite2 = Enemy('ufo.png', 300, 0, 3)
-# sprite21 = Enemy('ufo.png', 100, 0, 3)
-# sprite22 = Enemy('ufo.png', 200, 0, 3)
-# sprite23 = Enemy('ufo.png', 400, 0, 3)
-# sprite24 = Enemy('ufo.png', 500, 0, 3)
-# sprite25 = Enemy('ufo.png', 600, 0, 3)
-#sprite3 = GameSprite('treasure.png', 300, 400, 0)
+sprite1 = Player('пушка1.png.png', 50, 350, 5)
+sprite2 = NPS('пушка1.png.png', 50, 400, 5)
+sprite21 = NPS('пушка1.png.png', 150, 400, 3)
+sprite22 = NPS('пушка1.png.png', 250, 400, 3)
+sprite23 = NPS('пушка1.png.png', 350, 400, 3)
+sprite24 = NPS('пушка1.png.png', 450, 400, 3)
+sprite25 = NPS('пушка1.png.png', 550, 400, 3)
+sprite26 = NPS('пушка1.png.png', 650, 400, 3)
+# sprite3 = GameSprite('treasure.png', 300, 400, 0)
 
 # w2 = Wall(154, 205, 50, 100, 20, 10, 400)
 # w3 = Wall(154, 205, 50, 300, 130, 10, 450)
 # w4 = Wall(154, 205, 50, 500, 20, 10, 400)
-
-# d
- 
 
 font.init()
 font = font.Font(None, 30)
@@ -100,16 +111,43 @@ while game:
         collides = sprite.groupcollide(monsters, bullets, True, True)
         for c in collides:
             score += 1
-            monster = Enemy('танк1.jpg',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5))
+            monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5))
             monsters.add(monster)
         sprite1.reset()
         sprite1.update()
+        # sprite2.reset()
+        # sprite2.update()
+        # sprite21.reset()
+        # sprite21.update()
+        # sprite22.reset()
+        # sprite22.update()
+        # sprite23.reset()
+        # sprite23.update()
+        # sprite24.reset()
+        # sprite24.update()
+        # sprite25.reset()
+        # sprite25.update()
+        # sprite26.reset()
+        # sprite26.update()
         text1 = font2.render('Счёт:' + str(score), 1, (255, 255, 255))
         text2 = font2.render('Пропущено:' + str(missing), 1, (255, 255, 255))
 
         window.blit(text1, (10, 20))
         window.blit(text2, (10, 50))
+    sec += 1
+    if  score >= 1:
+        sprite2.reset()
+        sprite2.update()
+        if sec == 30:
+            sprite2.fire()
 
+    if  score >= 2:
+        sprite21.reset()
+        sprite21.update()
+        if sec == 30:
+            sprite21.fire()
+    if sec == 30:
+        sec = 0
     for e in event.get():
         if e.type == QUIT:
             game = False
