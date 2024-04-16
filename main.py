@@ -61,6 +61,12 @@ class NPS(GameSprite):
     def fire(self):
         bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5)
         bullets.add(bullet)
+    def fire2(self):
+        bullet = Bullet('пуля2.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullets.add(bullet)
+    def fire3(self):
+        bullet = Bullet('пуля3.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullets.add(bullet)
 #создай окно игры
 window = display.set_mode((700, 500))
 display.set_caption('Шутер')
@@ -79,14 +85,15 @@ bullets = sprite.Group()
 
 
 sprite1 = Player('пушка1.png.png', 50, 350, 5)
-sprite2 = NPS('пушка1.png.png', 50, 400, 5)
+sprite2 = NPS('пушка1.png.png', 70, 400, 5)
 sprite21 = NPS('пушка1.png.png', 150, 400, 3)
 sprite22 = NPS('пушка1.png.png', 250, 400, 3)
 sprite23 = NPS('пушка1.png.png', 350, 400, 3)
 sprite24 = NPS('пушка1.png.png', 450, 400, 3)
 sprite25 = NPS('пушка1.png.png', 550, 400, 3)
-sprite26 = NPS('пушка1.png.png', 650, 400, 3)
-# sprite3 = GameSprite('treasure.png', 300, 400, 0)
+sprite26 = NPS('пушка1.png.png', 625, 400, 3)
+sprite27 = NPS('пушка1.png.png', 0, 400, 5)
+#sprite3 = GameSprite('treasure.png', 300, 400, 0)
 
 # w2 = Wall(154, 205, 50, 100, 20, 10, 400)
 # w3 = Wall(154, 205, 50, 300, 130, 10, 450)
@@ -135,18 +142,91 @@ while game:
         window.blit(text1, (10, 20))
         window.blit(text2, (10, 50))
     sec += 1
-    if  score >= 1:
-        sprite2.reset()
-        sprite2.update()
-        if sec == 30:
-            sprite2.fire()
+    if  score >= 10:
+        sprite27.reset()
+        sprite27.update()
+        if sec == 45:
+            if 0 <= score <= 500:
+                sprite27.fire()
+            elif 501 <= score <= 1000:
+                sprite27.fire2()
+            elif score >= 1001:
+                sprite27.fire3()
 
-    if  score >= 2:
+    if  score >= 100:
         sprite21.reset()
         sprite21.update()
-        if sec == 30:
-            sprite21.fire()
-    if sec == 30:
+        if sec == 45:
+            if 0 <= score <= 500:
+                sprite21.fire()
+            elif 501 <= score <= 1000:
+                sprite21.fire2()
+            elif score >= 1001:
+                sprite21.fire3()
+        
+
+    if  score >= 150:
+        sprite22.reset()
+        sprite22.update()
+        if sec == 45:
+            if 0 <= score <= 500:
+                sprite22.fire()
+            elif 501 <= score <= 1000:
+                sprite22.fire2()
+            elif score >= 1001:
+                sprite22.fire3()
+    if  score >= 200:
+        sprite23.reset()
+        sprite23.update()
+        if sec == 45:
+            if 0 <= score <= 500:
+                sprite23.fire()
+            elif 501 <= score <= 1000:
+                sprite23.fire2()
+            elif score >= 1001:
+                sprite23.fire3()
+    if  score >= 250:
+        sprite24.reset()
+        sprite24.update()
+        if sec == 45:
+            if 0 <= score <= 500:
+                sprite24.fire()
+            elif 501 <= score <= 1000:
+                sprite24.fire2()
+            elif score >= 1001:
+                sprite24.fire3()
+    if  score >= 300:
+        sprite25.reset()
+        sprite25.update()
+        if sec == 45:
+            if 0 <= score <= 501:
+                sprite25.fire()
+            elif 501 <= score <= 1000:
+                sprite25.fire2()
+            elif score >= 1001:
+                sprite25.fire3()
+    if  score >= 350:
+        sprite26.reset()
+        sprite26.update()
+        if sec == 45:
+            if 0 <= score <= 500:
+                sprite26.fire()
+            elif 501 <= score <= 1000:
+                sprite26.fire2()
+            elif score >= 1001:
+                sprite26.fire3()
+    if  score >= 50:
+        sprite2.reset()
+        sprite2.update()
+        if sec == 45:
+            if 0 <= score <= 500:
+                sprite2.fire()
+            elif 501 <= score <= 1000:
+                sprite2.fire2()
+            elif score >= 1001:
+                sprite2.fire3()
+    
+    if sec == 45:
         sec = 0
     for e in event.get():
         if e.type == QUIT:
