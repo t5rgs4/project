@@ -5,8 +5,16 @@ import threading
 
 score = 0
 missing = 0
-
+balance = 0
 sec = 0
+spawn = False
+spawn2 = False
+spawn3 = False
+spawn4 = False
+spawn5 = False
+spawn6 = False
+spawn7 = False
+spawn1 = False
 
 font.init()
 font2 = font.Font(None, 36)
@@ -97,12 +105,13 @@ sprite27 = NPS('пушка1.png.png', 0, 400, 5)
 
 # w2 = Wall(154, 205, 50, 100, 20, 10, 400)
 # w3 = Wall(154, 205, 50, 300, 130, 10, 450)
-# w4 = Wall(154, 205, 50, 500, 20, 10, 400)
+# w4 = Wall(154, 205, 50, 500, 20, 10, 400)a
 
 font.init()
 font = font.Font(None, 30)
 w1 = font.render('убито-', True, (255, 215, 0))
 w2 = font.render('пропущено-', True, (255, 215, 0))
+w3 = font.render('Баланс-', True, (255, 215, 0))
 win = font.render('You win!', True, (255, 215, 0))
 lose = font.render('You lose!', True, (180, 0, 0))
 
@@ -118,6 +127,7 @@ while game:
         collides = sprite.groupcollide(monsters, bullets, True, True)
         for c in collides:
             score += 1
+            balance += 100
             monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5))
             monsters.add(monster)
         sprite1.reset()
@@ -138,11 +148,13 @@ while game:
         # sprite26.update()
         text1 = font2.render('Счёт:' + str(score), 1, (255, 255, 255))
         text2 = font2.render('Пропущено:' + str(missing), 1, (255, 255, 255))
+        text3 = font2.render('Баланс:' + str(balance), 1, (255, 255, 255))
 
         window.blit(text1, (10, 20))
         window.blit(text2, (10, 50))
+        window.blit(text3, (10, 80))
     sec += 1
-    if  score >= 10:
+    if spawn == True:
         sprite27.reset()
         sprite27.update()
         if sec == 45:
@@ -153,7 +165,7 @@ while game:
             elif score >= 1001:
                 sprite27.fire3()
 
-    if  score >= 100:
+    if spawn2 == True:
         sprite21.reset()
         sprite21.update()
         if sec == 45:
@@ -165,7 +177,7 @@ while game:
                 sprite21.fire3()
         
 
-    if  score >= 150:
+    if spawn3 == True:
         sprite22.reset()
         sprite22.update()
         if sec == 45:
@@ -175,7 +187,7 @@ while game:
                 sprite22.fire2()
             elif score >= 1001:
                 sprite22.fire3()
-    if  score >= 200:
+    if spawn4 == True:
         sprite23.reset()
         sprite23.update()
         if sec == 45:
@@ -185,17 +197,17 @@ while game:
                 sprite23.fire2()
             elif score >= 1001:
                 sprite23.fire3()
-    if  score >= 250:
+    if spawn5 == True:
         sprite24.reset()
         sprite24.update()
         if sec == 45:
             if 0 <= score <= 500:
-                sprite24.fire()
+                sprite24.fire()  
             elif 501 <= score <= 1000:
                 sprite24.fire2()
             elif score >= 1001:
                 sprite24.fire3()
-    if  score >= 300:
+    if spawn6 == True:
         sprite25.reset()
         sprite25.update()
         if sec == 45:
@@ -205,7 +217,7 @@ while game:
                 sprite25.fire2()
             elif score >= 1001:
                 sprite25.fire3()
-    if  score >= 350:
+    if spawn7 == True:
         sprite26.reset()
         sprite26.update()
         if sec == 45:
@@ -215,7 +227,7 @@ while game:
                 sprite26.fire2()
             elif score >= 1001:
                 sprite26.fire3()
-    if  score >= 50:
+    if spawn1 == True:
         sprite2.reset()
         sprite2.update()
         if sec == 45:
@@ -234,5 +246,38 @@ while game:
         if e.type == MOUSEBUTTONDOWN:
             if e.button == 1:
                 sprite1.fire()
+        if e.type == KEYDOWN:
+            if e.key == K_1:
+                if balance >= 500:
+                    spawn = True
+                    balance -= 500
+            if e.key == K_3:
+                if balance >= 500:
+                    spawn2 = True
+                    balance -= 500
+            if e.key == K_4:
+                if balance >= 500:
+                    spawn3 = True
+                    balance -= 500
+            if e.key == K_5:
+                if balance >= 500:
+                    spawn4 = True
+                    balance -= 500
+            if e.key == K_6:
+                if balance >= 500:
+                    spawn5 = True
+                    balance -= 500
+            if e.key == K_7:
+                if balance >= 500:
+                    spawn6 = True
+                    balance -= 500
+            if e.key == K_8:
+                if balance >= 500:
+                    spawn7 = True
+                    balance -= 500
+            if e.key == K_2:
+                if balance >= 500:
+                    spawn1 = True
+                    balance -= 500
     display.update()
     clock.tick(FPS)
