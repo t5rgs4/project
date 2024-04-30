@@ -3,6 +3,7 @@ from pygame import *
 import random
 import threading
 
+
 score = 0
 missing = 0
 balance = 0
@@ -15,6 +16,31 @@ spawn5 = False
 spawn6 = False
 spawn7 = False
 spawn1 = False
+
+fire1 = True
+fire2 = False
+fire3 = False
+fire11 = True
+fire21 = False
+fire31 = False
+fire12 = True
+fire22 = False
+fire32 = False
+fire13 = True
+fire23 = False
+fire33 = False
+fire14 = True
+fire24 = False
+fire34 = False
+fire15 = True
+fire25 = False
+fire35 = False
+fire16 = True
+fire26 = False
+fire36 = False
+fire17 = True
+fire27 = False
+fire37 = False
 
 font.init()
 font2 = font.Font(None, 36)
@@ -42,8 +68,13 @@ class Player(GameSprite):
         bullets.add(bullet)        
 class Enemy(GameSprite):
     direction = 'down'
+    def __init__(self, player_image, player_x, player_y, player_speed, hp):
+        super().__init__(player_image, player_x, player_y, player_speed)
+        self.hp = hp
     def update(self):
         global missing
+        global score
+        global balance
         if self.rect.y <= 0:
             self.direction = 'down'
         if self.rect.y >= 550:
@@ -52,6 +83,16 @@ class Enemy(GameSprite):
             self.rect.x = random.randint(0, 700)
         if self.direction == 'down':
             self.rect.y += self.speed
+        if sprite.spritecollide(self, bullets, True):
+            if self.hp <= 1:
+                self.kill()
+                score += 1
+                balance += 100
+                monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 1)
+                monsters.add(monster)
+            else:
+                self.hp -= 1
+
 
 class Bullet(GameSprite):
     def update(self):
@@ -86,7 +127,7 @@ FPS = 60
 
 monsters = sprite.Group()
 for i in range(10):
-    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5))
+    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 1)
     monsters.add(monster)
 
 bullets = sprite.Group()
@@ -124,28 +165,8 @@ while game:
         monsters.draw(window)
         bullets.update()
         bullets.draw(window)
-        collides = sprite.groupcollide(monsters, bullets, True, True)
-        for c in collides:
-            score += 1
-            balance += 100
-            monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5))
-            monsters.add(monster)
         sprite1.reset()
         sprite1.update()
-        # sprite2.reset()
-        # sprite2.update()
-        # sprite21.reset()
-        # sprite21.update()
-        # sprite22.reset()
-        # sprite22.update()
-        # sprite23.reset()
-        # sprite23.update()
-        # sprite24.reset()
-        # sprite24.update()
-        # sprite25.reset()
-        # sprite25.update()
-        # sprite26.reset()
-        # sprite26.update()
         text1 = font2.render('Счёт:' + str(score), 1, (255, 255, 255))
         text2 = font2.render('Пропущено:' + str(missing), 1, (255, 255, 255))
         text3 = font2.render('Баланс:' + str(balance), 1, (255, 255, 255))
@@ -158,84 +179,85 @@ while game:
         sprite27.reset()
         sprite27.update()
         if sec == 45:
-            if 0 <= score <= 500:
+            if fire1 == True:
                 sprite27.fire()
-            elif 501 <= score <= 1000:
+            if fire2 == True:
                 sprite27.fire2()
-            elif score >= 1001:
+            if fire3 == True:
                 sprite27.fire3()
 
     if spawn2 == True:
         sprite21.reset()
         sprite21.update()
         if sec == 45:
-            if 0 <= score <= 500:
+            if fire11 == True:
                 sprite21.fire()
-            elif 501 <= score <= 1000:
+            if fire21 == True:
                 sprite21.fire2()
-            elif score >= 1001:
+            if fire31 == True:
                 sprite21.fire3()
+
         
 
     if spawn3 == True:
         sprite22.reset()
         sprite22.update()
         if sec == 45:
-            if 0 <= score <= 500:
+            if fire12 == True:
                 sprite22.fire()
-            elif 501 <= score <= 1000:
+            if fire22 == True:
                 sprite22.fire2()
-            elif score >= 1001:
+            if fire32 == True:
                 sprite22.fire3()
     if spawn4 == True:
         sprite23.reset()
         sprite23.update()
         if sec == 45:
-            if 0 <= score <= 500:
+            if fire13 == True:
                 sprite23.fire()
-            elif 501 <= score <= 1000:
+            if fire23 == True:
                 sprite23.fire2()
-            elif score >= 1001:
+            if fire33 == True:
                 sprite23.fire3()
     if spawn5 == True:
         sprite24.reset()
         sprite24.update()
         if sec == 45:
-            if 0 <= score <= 500:
-                sprite24.fire()  
-            elif 501 <= score <= 1000:
+            if fire14 == True:
+                sprite24.fire()
+            if fire24 == True:
                 sprite24.fire2()
-            elif score >= 1001:
+            if fire34 == True:
                 sprite24.fire3()
     if spawn6 == True:
         sprite25.reset()
         sprite25.update()
         if sec == 45:
-            if 0 <= score <= 501:
+            if fire15 == True:
                 sprite25.fire()
-            elif 501 <= score <= 1000:
+            if fire25 == True:
                 sprite25.fire2()
-            elif score >= 1001:
+            if fire35 == True:
                 sprite25.fire3()
     if spawn7 == True:
         sprite26.reset()
         sprite26.update()
         if sec == 45:
-            if 0 <= score <= 500:
+            if fire16 == True:
                 sprite26.fire()
-            elif 501 <= score <= 1000:
+            if fire26 == True:
                 sprite26.fire2()
-            elif score >= 1001:
+            if fire36 == True:
                 sprite26.fire3()
     if spawn1 == True:
         sprite2.reset()
         sprite2.update()
         if sec == 45:
-            if 0 <= score <= 500:
+            if fire17 == True:
                 sprite2.fire()
-            elif 501 <= score <= 1000:
+            if fire27 == True:
                 sprite2.fire2()
-            elif score >= 1001:
+            if fire37 == True:
                 sprite2.fire3()
     
     if sec == 45:
@@ -263,6 +285,44 @@ while game:
                 if balance >= 500:
                     spawn4 = True
                     balance -= 500
+            if e.key == K_6:
+                if balance >= 500:
+                    spawn5 = True
+                    balance -= 500
+            if e.key == K_7:
+                if balance >= 500:
+                    spawn6 = True
+                    balance -= 500
+            if e.key == K_8:
+                if balance >= 500:
+                    spawn7 = True
+                    balance -= 500
+            if e.key == K_2:
+                if balance >= 500:
+                    spawn1 = True
+                    balance -= 500
+            
+        if e.type == KEYDOWN:
+            if e.key == K_:
+                if balance >= 550:
+                    balance -= 550
+                    fire2 = True
+                    fire1 = False
+            if e.key == K_3:
+                if balance >= 550:
+                    balance -= 550
+                    fire21 = True
+                    fire11 = False
+            if e.key == K_4:
+               if balance >= 550:
+                    balance -= 550
+                    fire21 = True
+                    fire11 = False
+            if e.key == K_5:
+                if balance >= 550:
+                    balance -= 550
+                    fire22 = True
+                    fire12 = False
             if e.key == K_6:
                 if balance >= 500:
                     spawn5 = True
