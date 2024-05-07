@@ -17,6 +17,23 @@ spawn6 = False
 spawn7 = False
 spawn1 = False
 
+q = True
+w = True
+o = True
+r = True
+t = True
+y = True
+u = True
+i = True
+
+q1 = True
+w1 = True
+o1 = True
+r1 = True
+t1 = True
+y1 = True
+u1 = True
+i1 = True
 fire1 = True
 fire2 = False
 fire3 = False
@@ -88,7 +105,7 @@ class Enemy(GameSprite):
                 self.kill()
                 score += 1
                 balance += 100
-                monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 1)
+                monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 5)
                 monsters.add(monster)
             else:
                 self.hp -= 1
@@ -127,7 +144,7 @@ FPS = 60
 
 monsters = sprite.Group()
 for i in range(10):
-    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 1)
+    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 5)
     monsters.add(monster)
 
 bullets = sprite.Group()
@@ -185,6 +202,17 @@ while game:
                 sprite27.fire2()
             if fire3 == True:
                 sprite27.fire3()
+
+    if spawn1 == True:
+        sprite2.reset()
+        sprite2.update()
+        if sec == 45:
+            if fire17 == True:
+                sprite2.fire()
+            if fire27 == True:
+                sprite2.fire2()
+            if fire37 == True:
+                sprite2.fire3()
 
     if spawn2 == True:
         sprite21.reset()
@@ -249,95 +277,123 @@ while game:
                 sprite26.fire2()
             if fire36 == True:
                 sprite26.fire3()
-    if spawn1 == True:
-        sprite2.reset()
-        sprite2.update()
-        if sec == 45:
-            if fire17 == True:
-                sprite2.fire()
-            if fire27 == True:
-                sprite2.fire2()
-            if fire37 == True:
-                sprite2.fire3()
+    # if spawn1 == True:
+    #     sprite2.reset()
+    #     sprite2.update()
+    #     if sec == 45:
+    #         if fire17 == True:
+    #             sprite2.fire()
+    #         if fire27 == True:
+    #             sprite2.fire2()
+    #         if fire37 == True:
+    #             sprite2.fire3()
     
     if sec == 45:
         sec = 0
     for e in event.get():
+        print(e)
         if e.type == QUIT:
             game = False
         if e.type == MOUSEBUTTONDOWN:
             if e.button == 1:
                 sprite1.fire()
-        if e.type == KEYDOWN:
-            if e.key == K_1:
-                if balance >= 500:
-                    spawn = True
-                    balance -= 500
-            if e.key == K_3:
-                if balance >= 500:
-                    spawn2 = True
-                    balance -= 500
-            if e.key == K_4:
-                if balance >= 500:
-                    spawn3 = True
-                    balance -= 500
-            if e.key == K_5:
-                if balance >= 500:
-                    spawn4 = True
-                    balance -= 500
-            if e.key == K_6:
-                if balance >= 500:
-                    spawn5 = True
-                    balance -= 500
-            if e.key == K_7:
-                if balance >= 500:
-                    spawn6 = True
-                    balance -= 500
-            if e.key == K_8:
-                if balance >= 500:
-                    spawn7 = True
-                    balance -= 500
-            if e.key == K_2:
-                if balance >= 500:
-                    spawn1 = True
-                    balance -= 500
+        
             
         if e.type == KEYDOWN:
-            if e.key == K_:
-                if balance >= 550:
+            print(e.unicode == '!')
+            if e.unicode == '!':
+                if balance >= 550 and q1 != False:
                     balance -= 550
                     fire2 = True
                     fire1 = False
-            if e.key == K_3:
+                    q1 = False
+            if e.unicode == '@' and w1 != False:
                 if balance >= 550:
                     balance -= 550
-                    fire21 = True
-                    fire11 = False
-            if e.key == K_4:
+                    fire27 = True
+                    fire17 = False
+                    w1 = False
+            if e.unicode == '#' and o1 != False:
                if balance >= 550:
                     balance -= 550
                     fire21 = True
                     fire11 = False
-            if e.key == K_5:
+                    o1 = False
+            if e.unicode == '$' and r1 != False:
                 if balance >= 550:
                     balance -= 550
                     fire22 = True
                     fire12 = False
-            if e.key == K_6:
-                if balance >= 500:
-                    spawn5 = True
-                    balance -= 500
-            if e.key == K_7:
-                if balance >= 500:
-                    spawn6 = True
-                    balance -= 500
-            if e.key == K_8:
-                if balance >= 500:
-                    spawn7 = True
-                    balance -= 500
-            if e.key == K_2:
-                if balance >= 500:
-                    spawn1 = True
-                    balance -= 500
+                    r1 = False
+            if e.unicode == '%' and t1 != False:
+                if balance >= 550:
+                    balance -= 550
+                    fire23 = True
+                    fire13 = False
+                    t1 = False
+            if e.unicode == '^' and y1 != False:
+                if balance >= 550:
+                    balance -= 550
+                    fire24 = True
+                    fire14 = False
+                    y1 = False
+            if e.unicode == '&' and u1 != False:
+                if balance >= 550:
+                    balance -= 550
+                    fire25 = True
+                    fire15 = False
+                    u1 = False
+            if e.unicode == '*' and i1 != False:
+                if balance >= 550:
+                    balance -= 550
+                    fire26 = True
+                    fire16 = False
+                    i1 = False
+            if e.type == KEYDOWN:
+                if e.key == K_1:
+                    if balance >= 500 and q != False:
+                        spawn = True
+                        balance -= 500
+                        q = False
+                if e.key == K_2:
+                    if balance >= 500 and w != False:
+                        spawn1 = True
+                        balance -= 500
+                        w = False
+                if e.key == K_3:
+                    if balance >= 500 and o != False:
+                        spawn2 = True
+                        balance -= 500
+                        o = False
+                if e.key == K_4:
+                    if balance >= 500 and r != False:
+                        spawn3 = True
+                        balance -= 500
+                        r = False
+                if e.key == K_5:
+                    if balance >= 500 and t != False:
+                        spawn4 = True
+                        balance -= 500
+                        t = False
+                if e.key == K_6:
+                    if balance >= 500 and y != False:
+                        spawn5 = True
+                        balance -= 500
+                        y = False
+                if e.key == K_7:
+                    if balance >= 500 and u != False:
+                        spawn6 = True
+                        balance -= 500
+                        u = False
+                if e.key == K_8:
+                    if balance >= 500 and i != False:
+                        spawn7 = True
+                        balance -= 500
+                        i = False
+                # if e.key == K_2:
+                #     if balance >= 500:
+                #         spawn1 = True
+                #         balance -= 500
     display.update()
     clock.tick(FPS)
+
