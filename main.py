@@ -34,6 +34,16 @@ t1 = True
 y1 = True
 u1 = True
 i1 = True
+
+q2 = True
+w2 = True
+o2 = True
+r2 = True
+t2 = True
+y2 = True
+u2 = True
+i2 = True
+
 fire1 = True
 fire2 = False
 fire3 = False
@@ -82,7 +92,14 @@ class Player(GameSprite):
             self.rect.x += self.speed
     def fire(self):
         bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5)
-        bullets.add(bullet)        
+        bullets.add(bullet)  
+    def fire2(self):
+        bullet = Bullet('пуля2.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullets.add(bullet)    
+    def fire3(self):
+        bullet = Bullet('пуля3.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullets.add(bullet)   
+                 
 class Enemy(GameSprite):
     direction = 'down'
     def __init__(self, player_image, player_x, player_y, player_speed, hp):
@@ -105,7 +122,7 @@ class Enemy(GameSprite):
                 self.kill()
                 score += 1
                 balance += 100
-                monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 5)
+                monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,1), 5)
                 monsters.add(monster)
             else:
                 self.hp -= 1
@@ -143,8 +160,8 @@ FPS = 60
 
 
 monsters = sprite.Group()
-for i in range(10):
-    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,5), 5)
+for i in range(7):
+    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,1), 5)
     monsters.add(monster)
 
 bullets = sprite.Group()
@@ -165,16 +182,18 @@ sprite27 = NPS('пушка1.png.png', 0, 400, 5)
 # w3 = Wall(154, 205, 50, 300, 130, 10, 450)
 # w4 = Wall(154, 205, 50, 500, 20, 10, 400)a
 
-font.init()
-font = font.Font(None, 30)
-w1 = font.render('убито-', True, (255, 215, 0))
-w2 = font.render('пропущено-', True, (255, 215, 0))
-w3 = font.render('Баланс-', True, (255, 215, 0))
-win = font.render('You win!', True, (255, 215, 0))
-lose = font.render('You lose!', True, (180, 0, 0))
+
+font1 = font.Font(None, 30)
+font3 = font.Font(None, 70)
+w1 = font1.render('убито-', True, (255, 215, 0))
+w2 = font1.render('пропущено-', True, (255, 215, 0))
+w3 = font1.render('Баланс-', True, (255, 215, 0))
+win = font1.render('You win!', True, (255, 215, 0))
+lose = font1.render('You lose!', True, (180, 0, 0))
 
 finish = False
 game = True
+char_level = 1
 while game:
     if finish != True:
         window.blit(background, (0, 0))
@@ -187,10 +206,13 @@ while game:
         text1 = font2.render('Счёт:' + str(score), 1, (255, 255, 255))
         text2 = font2.render('Пропущено:' + str(missing), 1, (255, 255, 255))
         text3 = font2.render('Баланс:' + str(balance), 1, (255, 255, 255))
-
         window.blit(text1, (10, 20))
         window.blit(text2, (10, 50))
         window.blit(text3, (10, 80))
+        if missing >= 1:
+            text4 = font3.render('You lose!', True, (180, 0, 0))
+            window.blit(text4, (250, 350))
+            finish = True
     sec += 1
     if spawn == True:
         sprite27.reset()
@@ -296,13 +318,27 @@ while game:
             game = False
         if e.type == MOUSEBUTTONDOWN:
             if e.button == 1:
-                sprite1.fire()
-        
+                if char_level == 1:
+                    sprite1.fire()
+                if char_level == 2:
+                    sprite1.fire2()
+                if char_level == 3:
+                    sprite1.fire3()
+
+    
             
         if e.type == KEYDOWN:
+            if e.unicode == 'z':
+                if balance >= 550:
+                    balance -= 550
+                    char_level = 2
+            if e.unicode == 'x':
+                if balance >= 1000:
+                    balance -= 1000
+                    char_level = 3
             print(e.unicode == '!')
-            if e.unicode == '!':
-                if balance >= 550 and q1 != False:
+            if e.unicode == '!' and q1 != False:
+                if balance >= 550:
                     balance -= 550
                     fire2 = True
                     fire1 = False
@@ -349,6 +385,99 @@ while game:
                     fire26 = True
                     fire16 = False
                     i1 = False
+
+
+            if e.unicode == 'q' and q2 != False:
+                if balance >= 1000:
+                    balance -= 1000
+                    fire3 = True
+                    fire2 = False
+                    q2 = False
+            if e.unicode == 'w' and w2 != False:
+                if balance >= 1000:
+                    balance -= 1000
+                    fire37 = True
+                    fire27 = False
+                    w2 = False
+            if e.unicode == 'r' and o2 != False:
+               if balance >= 1000:
+                    balance -= 1000
+                    fire31 = True
+                    fire21 = False
+                    o2 = False
+            if e.unicode == 't' and r2 != False:
+                if balance >= 1000:
+                    balance -= 1000
+                    fire32 = True
+                    fire22 = False
+                    r2 = False
+            if e.unicode == 'y' and t2 != False:
+                if balance >= 1000:
+                    balance -= 1000
+                    fire33 = True
+                    fire23 = False
+                    t2 = False
+            if e.unicode == 'u' and y2 != False:
+                if balance >= 1000:
+                    balance -= 1000
+                    fire34 = True
+                    fire24 = False
+                    y2 = False
+            if e.unicode == 'i' and u2 != False:
+                if balance >= 550:
+                    balance -= 550
+                    fire35 = True
+                    fire25 = False
+                    u2 = False
+            if e.unicode == 'o' and i2 != False:
+                if balance >= 1000:
+                    balance -= 1000
+                    fire36 = True
+                    fire26 = False
+                    i2 = False
+
+
+            if e.type == KEYDOWN:
+                if e.key == K_1:
+                    if balance >= 500 and q != False:
+                        spawn = True
+                        balance -= 500
+                        q = False
+                if e.key == K_2:
+                    if balance >= 500 and w != False:
+                        spawn1 = True
+                        balance -= 500
+                        w = False
+                if e.key == K_3:
+                    if balance >= 500 and o != False:
+                        spawn2 = True
+                        balance -= 500
+                        o = False
+                if e.key == K_4:
+                    if balance >= 500 and r != False:
+                        spawn3 = True
+                        balance -= 500
+                        r = False
+                if e.key == K_5:
+                    if balance >= 500 and t != False:
+                        spawn4 = True
+                        balance -= 500
+                        t = False
+                if e.key == K_6:
+                    if balance >= 500 and y != False:
+                        spawn5 = True
+                        balance -= 500
+                        y = False
+                if e.key == K_7:
+                    if balance >= 500 and u != False:
+                        spawn6 = True
+                        balance -= 500
+                        u = False
+                if e.key == K_8:
+                    if balance >= 500 and i != False:
+                        spawn7 = True
+                        balance -= 500
+                        i = False
             if e.type == KEYDOWN:
                 if e.key == K_1:
                     if balance >= 500 and q != False:
@@ -394,6 +523,8 @@ while game:
                 #     if balance >= 500:
                 #         spawn1 = True
                 #         balance -= 500
+    display.update()
+    clock.tick(FPS)
     display.update()
     clock.tick(FPS)
 
