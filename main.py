@@ -91,13 +91,13 @@ class Player(GameSprite):
         if keys_pressed[K_d] and self.rect.x <= 650:
             self.rect.x += self.speed
     def fire(self):
-        bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5, 1)
         bullets.add(bullet)  
     def fire2(self):
-        bullet = Bullet('пуля2.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullet = Bullet('пуля2.png.png', self.rect.centerx, self.rect.centery, 5, 2)
         bullets.add(bullet)    
     def fire3(self):
-        bullet = Bullet('пуля3.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullet = Bullet('пуля3.png.png', self.rect.centerx, self.rect.centery, 5, 10)
         bullets.add(bullet)   
                  
 class Enemy(GameSprite):
@@ -117,22 +117,52 @@ class Enemy(GameSprite):
             self.rect.x = random.randint(0, 700)
         if self.direction == 'down':
             self.rect.y += self.speed
-        if sprite.spritecollide(self, bullets, True):
-            if self.hp <= 1:
-                self.kill()
-                score += 1
-                balance += 100
-                monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,1), 5)
-                monsters.add(monster)
-            else:
-                self.hp -= 1
-
-
+        collides = sprite.spritecollide(self, bullets, True)
+        for c in collides:
+            self.hp -= c.damage
+        if self.hp < 1:
+            self.kill()
+            score += 1
+            balance += 100
+            monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,1), 3)
+            monsters.add(monster)
 class Bullet(GameSprite):
+    def __init__(self, player_image, player_x, player_y, player_speed, damage):
+        super().__init__(player_image, player_x, player_y, player_speed)
+        self.damage = damage
     def update(self):
         self.rect.y -= self.speed
         if self.rect.y <= 0:
             self.kill()
+
+class Boss(GameSprite):
+    direction = 'down'
+    def __init__(self, player_image, player_x, player_y, player_speed, hp):
+        super().__init__(player_image, player_x, player_y, player_speed)
+        self.hp = hp
+    def update(self):
+        global missing
+        global score
+        global balance
+        global finish
+        if self.rect.y <= 0:
+            self.direction = 'down'
+        if self.rect.y >= 550:
+            self.rect.y = 0
+            missing += 1
+            self.rect.x = random.randint(0, 700)
+        if self.direction == 'down':
+            self.rect.y += 1
+        collides = sprite.spritecollide(self, bullets, True)
+        for c in collides:
+            self.hp -= c.damage
+        if self.hp < 1:
+            print(self.hp)
+            self.kill()
+            text4 = font3.render('You win!', True, (255, 215, 0))
+            window.blit(text4, (250, 350))
+            finish = True
+            
 
 class NPS(GameSprite):
     # def update(self):
@@ -142,13 +172,13 @@ class NPS(GameSprite):
     #     if keys_pressed[K_d] and self.rect.x <= 650:
             # self.rect.x += self.speed
     def fire(self):
-        bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullet = Bullet('пуля1.png.png', self.rect.centerx, self.rect.centery, 5, 1)
         bullets.add(bullet)
     def fire2(self):
-        bullet = Bullet('пуля2.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullet = Bullet('пуля2.png.png', self.rect.centerx, self.rect.centery, 5, 2)
         bullets.add(bullet)
     def fire3(self):
-        bullet = Bullet('пуля3.png.png', self.rect.centerx, self.rect.centery, 5)
+        bullet = Bullet('пуля3.png.png', self.rect.centerx, self.rect.centery, 5, 10)
         bullets.add(bullet)
 #создай окно игры
 window = display.set_mode((700, 500))
@@ -161,7 +191,7 @@ FPS = 60
 
 monsters = sprite.Group()
 for i in range(7):
-    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,1), 5)
+    monster = Enemy('танк1.png.png',random.randint(0, 650), random.randint(-200, -20), random.randint(1,1), 3)
     monsters.add(monster)
 
 bullets = sprite.Group()
@@ -180,7 +210,10 @@ sprite27 = NPS('пушка1.png.png', 0, 400, 5)
 
 # w2 = Wall(154, 205, 50, 100, 20, 10, 400)
 # w3 = Wall(154, 205, 50, 300, 130, 10, 450)
-# w4 = Wall(154, 205, 50, 500, 20, 10, 400)a
+# w4 = Wall(154, 205, 50, 500, 20, 10, 400)
+
+
+
 
 
 font1 = font.Font(None, 30)
@@ -191,9 +224,12 @@ w3 = font1.render('Баланс-', True, (255, 215, 0))
 win = font1.render('You win!', True, (255, 215, 0))
 lose = font1.render('You lose!', True, (180, 0, 0))
 
+boss = Boss('танк2.png.png', 350, -20, 1, 3)
+bossGroup = sprite.Group(boss)
 finish = False
 game = True
 char_level = 1
+spawnboss = False
 while game:
     if finish != True:
         window.blit(background, (0, 0))
@@ -209,10 +245,17 @@ while game:
         window.blit(text1, (10, 20))
         window.blit(text2, (10, 50))
         window.blit(text3, (10, 80))
-        if missing >= 1:
+        if missing >= 30:
             text4 = font3.render('You lose!', True, (180, 0, 0))
             window.blit(text4, (250, 350))
             finish = True
+    if score >= 200:
+        spawnboss = True
+        for m in monsters:
+            m.kill()
+    if spawnboss == True:
+        bossGroup.update()
+        bossGroup.draw(window)
     sec += 1
     if spawn == True:
         sprite27.reset()
@@ -313,7 +356,6 @@ while game:
     if sec == 45:
         sec = 0
     for e in event.get():
-        print(e)
         if e.type == QUIT:
             game = False
         if e.type == MOUSEBUTTONDOWN:
@@ -336,7 +378,6 @@ while game:
                 if balance >= 1000:
                     balance -= 1000
                     char_level = 3
-            print(e.unicode == '!')
             if e.unicode == '!' and q1 != False:
                 if balance >= 550:
                     balance -= 550
@@ -525,6 +566,3 @@ while game:
                 #         balance -= 500
     display.update()
     clock.tick(FPS)
-    display.update()
-    clock.tick(FPS)
-
